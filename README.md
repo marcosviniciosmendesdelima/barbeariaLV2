@@ -29,7 +29,7 @@ Através do sistema, os clientes podem realizar agendamentos de forma prática, 
 
 ## Integrantes do Grupo
 - Luis Henrique Amancio Nobre 
-- Marcos Vinicios Mendes de Lima
+- Marcos Vinícios Mendes de Lima
 - Victor Manoel da Silva
 
 
