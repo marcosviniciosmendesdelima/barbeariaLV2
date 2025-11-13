@@ -1,2 +1,2 @@
 # barbeariaLV2
-Projeto voltado para barbearia
+Projeto voltado para barbearia.
