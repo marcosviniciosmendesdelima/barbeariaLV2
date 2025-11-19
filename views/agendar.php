@@ -2,7 +2,6 @@
 session_start();
 require_once "../config/db.php";
 
-// Validar cliente
 if (!isset($_SESSION["cliente_id"])) {
     header("Location: login.php");
     exit;
