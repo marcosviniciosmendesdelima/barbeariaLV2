@@ -33,12 +33,13 @@ Personalização com nome e identidade visual da barbearia
 
 ## Tecnologias Utilizadas
 
+## Integrantes do Grupo
+- Luis Henrique Amancio Nobre 
+- Marcos Vinícios Mendes de Lima
+- Victor Manoel da Silva
 PHP — Linguagem principal do backend
-
 MySQL — Banco de dados relacional
-
 HTML5 / CSS3 / JavaScript — Estrutura e interação no frontend
-
 Bootstrap — Estilização, layout e responsividade
 
 ## Desenvolvedores
