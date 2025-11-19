@@ -1,4 +1,4 @@
-##BarbeariaLV2 – Sistema de Agendamento para Barbearias
+## BarbeariaLV2 – Sistema de Agendamento para Barbearias
 
 O BarbeariaLV2 é um sistema de agendamento online desenvolvido em PHP, criado especialmente para atender às necessidades de uma barbearia específica.
 Seu objetivo é otimizar o gerenciamento de horários, oferecendo uma plataforma moderna e acessível tanto para clientes quanto para administradores.
@@ -17,7 +17,7 @@ Gerar relatórios e histórico de agendamentos
 
 Permitir personalização visual conforme a identidade de cada barbearia parceira
 
-##Funcionalidades (em desenvolvimento)
+## Funcionalidades (em desenvolvimento)
 
 Cadastro de usuários (clientes e barbeiros)
 
@@ -31,7 +31,7 @@ Painel administrativo
 
 Personalização com nome e identidade visual da barbearia
 
-##Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 PHP — Linguagem principal do backend
 
@@ -41,7 +41,7 @@ HTML5 / CSS3 / JavaScript — Estrutura e interação no frontend
 
 Bootstrap — Estilização, layout e responsividade
 
-##Desenvolvedores
+## Desenvolvedores
 
 Victor Manoel da Silva
 
