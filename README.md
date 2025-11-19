@@ -14,12 +14,12 @@ Através do sistema, os clientes podem realizar agendamentos de forma prática, 
 - Personalizar o sistema conforme a identidade da barbearia parceira.  
 
 ##  Funcionalidades (em desenvolvimento)
-- [ ] Cadastro de usuários (clientes e barbeiros)  
-- [ ] Login e autenticação  
-- [ ] Agendamento e cancelamento de horários  
-- [ ] Visualização da agenda  
-- [ ] Painel administrativo  
-- [ ] Personalização com o nome e identidade visual da barbearia  
+-  Cadastro de usuários (clientes e barbeiros)  
+-  Login e autenticação  
+-  Agendamento e cancelamento de horários  
+-  Visualização da agenda  
+-  Painel administrativo  
+-  Personalização com o nome e identidade visual da barbearia  
 
 ## Tecnologias Utilizadas
 - PHP— Linguagem principal do backend  
