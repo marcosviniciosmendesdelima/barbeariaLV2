@@ -1,0 +1,119 @@
+/* ======== ESTILO GLOBAL BARBEARIA LV2 ========= */
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #0d0d0d;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fff;
+}
+
+/* ======== CABEÇALHO ========= */
+
+header {
+    background: #111;
+    padding: 15px 40px;
+    color: #f1c40f;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #f1c40f;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+    letter-spacing: 1px;
+}
+
+nav a {
+    color: #f1c40f;
+    text-decoration: none;
+    margin-left: 25px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #ffe680;
+}
+
+/* ======== CONTAINER CENTRAL ========= */
+
+.container {
+    width: 90%;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #1c1c1c;
+    border-radius: 10px;
+    box-shadow: 0 0 18px rgba(255, 215, 0, 0.1);
+}
+
+/* ======== TÍTULOS ========= */
+
+h2 {
+    color: #f1c40f;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* ======== INPUTS ========= */
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border: none;
+    border-radius: 6px;
+    background: #2a2a2a;
+    color: #fff;
+}
+
+input:focus, select:focus {
+    background: #333;
+    border: 1px solid #f1c40f;
+    outline: none;
+}
+
+/* ======== BOTÕES ========= */
+
+.btn {
+    display: inline-block;
+    background: #f1c40f;
+    color: #000;
+    font-weight: bold;
+    padding: 12px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    border: none;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.btn:hover {
+    background: #ffe680;
+}
+
+/* ======== ALERTAS ========= */
+
+.alert {
+    background: #9b1c1c;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+
+/* ======== LISTAS ========= */
+
+.card {
+    background: #222;
+    padding: 20px;
+    border-radius: 6px;
+    margin-bottom: 18px;
+    border-left: 4px solid #f1c40f;
+}
