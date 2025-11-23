@@ -5,16 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Barbearia LV2</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
 <style>
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: "Poppins", sans-serif;
     }
 
     body {
@@ -22,49 +19,37 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 15px;
-        background: linear-gradient(-45deg, #0e0e0e, #1a1a1a, #101010, #000);
-        background-size: 400% 400%;
-        animation: bg 12s ease infinite;
+        padding: 20px;
+        background: #111; /* Fundo sólido estilo template */
+        font-family: "Poppins", sans-serif;
     }
 
-    @keyframes bg {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-
-    .card {
+    .container-box {
         width: 100%;
-        max-width: 430px;
-        padding: 40px 35px;
+        max-width: 440px;
+        background: #1b1b1b;
+        border: 1px solid #2a2a2a;
+        padding: 45px 35px;
+        border-radius: 14px;
         text-align: center;
-        border-radius: 20px;
-        background: rgba(255, 255, 255, 0.10);
-        border: 1px solid rgba(255, 255, 255, 0.20);
-        backdrop-filter: blur(16px);
-        animation: fadeIn 1s ease forwards;
+        color: white;
+        box-shadow: 0 0 40px rgba(0,0,0,0.65);
+        animation: fade .7s ease-out forwards;
         opacity: 0;
     }
 
-    @keyframes fadeIn {
+    @keyframes fade {
         to { opacity: 1; }
     }
 
     /* LOGO */
     .logo-box {
-        width: 130px;
-        height: 130px;
+        width: 110px;
+        height: 110px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.13);
-        backdrop-filter: blur(6px);
-        margin: 0 auto 25px auto;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid rgba(255, 255, 255, 0.25);
         overflow: hidden;
-        box-shadow: 0 0 25px rgba(0,0,0,0.4);
+        margin: 0 auto 20px auto;
+        border: 2px solid #cfa84f; /* dourado elegante */
     }
 
     .logo-box img {
@@ -74,57 +59,49 @@
     }
 
     h1 {
-        font-weight: 600;
-        margin-bottom: 8px;
-        color: white;
+        font-family: "Playfair Display", serif;
         font-size: 34px;
+        color: #ffffff;
         letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
     }
 
     p {
-        color: #dcdcdc;
-        margin-bottom: 30px;
-        font-size: 17px;
-    }
-
-    a {
-        text-decoration: none;
-        width: 100%;
+        color: #cccccc;
+        margin-bottom: 35px;
+        font-size: 15px;
     }
 
     .btn {
         width: 100%;
-        padding: 15px;
+        padding: 14px;
+        border-radius: 8px;
         border: none;
-        border-radius: 14px;
-        font-size: 18px;
+        font-size: 17px;
         font-weight: 600;
         cursor: pointer;
-        transition: 0.25s;
-        margin-bottom: 14px;
-        display: block;
+        margin-bottom: 15px;
+        transition: .2s;
     }
 
-    .cliente {
-        background: #1fb971;
-        color: white;
-        box-shadow: 0 4px 12px rgba(31, 185, 113, 0.35);
+    /* Botão Cliente estilo dourado */
+    .btn-cliente {
+        background: #cfa84f;
+        color: #000;
+    }
+    .btn-cliente:hover {
+        background: #e2c372;
     }
 
-    .cliente:hover {
-        background: #27d485;
-        transform: translateY(-3px);
+    /* Botão Admin estilo preto elegante */
+    .btn-admin {
+        background: #000;
+        color: #cfa84f;
+        border: 1px solid #cfa84f;
     }
-
-    .admin {
-        background: #1b5cff;
-        color: white;
-        box-shadow: 0 4px 12px rgba(27, 92, 255, 0.35);
-    }
-
-    .admin:hover {
-        background: #4579ff;
-        transform: translateY(-3px);
+    .btn-admin:hover {
+        background: #242424;
     }
 
 </style>
@@ -132,22 +109,25 @@
 
 <body>
 
-<div class="card">
+<div class="container-box">
 
     <div class="logo-box">
-        <img src="../BarbeariaLV2/assets/img/logo.png.png" alt="Logo da Barbearia" onerror="this.style.display='none'">
+        <img src="../BarbeariaLV2/assets/img/logob.png.png" 
+             alt="Logo da Barbearia" 
+             onerror="this.style.display='none'">
     </div>
 
     <h1>Barbearia LV2</h1>
-    <p>Escolha seu tipo de acesso</p>
+    <p>Escolha como deseja acessar</p>
 
-    <a href="admin/servicos.php">
-        <button class="btn cliente">Sou Cliente</button>
-    </a>
+    <a href="views/login.php">
+    <button class="btn btn-cliente">Sou Cliente</button>
+</a>
 
     <a href="admin/login_admin.php">
-        <button class="btn admin">Sou Administrador</button>
+        <button class="btn btn-admin">Sou Administrador</button>
     </a>
+
 </div>
 
 </body>
