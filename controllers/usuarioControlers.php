@@ -25,11 +25,7 @@ function sanitize($str) {
     return trim(filter_var($str, FILTER_SANITIZE_STRING));
 }
 
-/**
- * =============================
- *   REGISTRO DE CLIENTE
- * =============================
- */
+
 if ($action === 'register_client') {
 
     $nome  = sanitize($_POST['nome'] ?? '');
