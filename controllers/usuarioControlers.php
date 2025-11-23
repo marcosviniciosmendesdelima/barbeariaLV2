@@ -7,9 +7,7 @@ $action = $_GET['action'] ?? '';
 
 $usuarioModel = new Usuario();
 
-/**
- * Redirecionamento profissional com parâmetros GET
- */
+
 function redirect_with(string $url, array $params = []) {
     if (!empty($params)) {
         $url .= (str_contains($url, '?') ? '&' : '?') . http_build_query($params);
