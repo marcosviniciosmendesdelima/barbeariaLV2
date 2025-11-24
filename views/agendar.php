@@ -3,24 +3,22 @@ session_start();
 require_once "../config/db.php";
 
 if (!isset($_SESSION["cliente_id"])) {
-    header("Location: login.php");
+    header("Location: ../views/login.php");
     exit;
 }
 
 $conn = Database::connect();
 
-// Serviço escolhido
 $servicoSelecionado = $_GET["servico_id"] ?? null;
 
-
-$servicoAtual = null;
-
-if ($servicoSelecionado) {
-    $stmt = $conn->prepare("SELECT * FROM servicos WHERE id = ? AND ativo = 1 LIMIT 1");
-    $stmt->execute([$servicoSelecionado]);
-    $servicoAtual = $stmt->fetch(PDO::FETCH_ASSOC);
+if (!$servicoSelecionado) {
+    header("Location: ../admin/servicos.php");
+    exit;
 }
 
+$stmt = $conn->prepare("SELECT * FROM servicos WHERE id = ? AND ativo = 1 LIMIT 1");
+$stmt->execute([$servicoSelecionado]);
+$servicoAtual = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $clienteNome = $_SESSION["cliente_nome"];
 ?>
@@ -33,90 +31,124 @@ $clienteNome = $_SESSION["cliente_nome"];
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
-    body {
-        background: #0d0d0d;
-        color: #f5ededf4;
-        font-family: Poppins, sans-serif;
-        padding-top: 40px;
-    }
 
-    .container-box {
-        max-width: 650px;
-        margin: auto;
-        background: rgba(255,255,255,0.05);
-        border-radius: 18px;
-        padding: 30px;
-        border: 1px solid rgba(255,255,255,0.12);
-        box-shadow: 0 0 30px rgba(255, 193, 7, 0.20);
-        backdrop-filter: blur(12px);
-    }
+/* ----------------- BASE ----------------- */
+body {
+    background: #0e0e0e;
+    color: #ffffff;
+    font-family: "Inter", sans-serif;
+    padding-top: 50px;
+}
 
-    .servico-card {
-        background: #1a1a1a;
-        border-radius: 14px;
-        padding: 14px;
-        border: 1px solid #2a2a2a;
-        display: flex;
-        gap: 15px;
-        margin-bottom: 20px;
-    }
+/* ----------------- CONTAINER ----------------- */
+.container-box {
+    max-width: 700px;
+    margin: auto;
+    background: #171717;
+    border-radius: 15px;
+    padding: 35px;
+    border: 1px solid #2d2d2d;
+    box-shadow: 0px 0px 35px rgba(255, 215, 0, 0.18);
+}
 
-    .servico-card img {
-        width: 120px;
-        height: 120px;
-        border-radius: 12px;
-        object-fit: cover;
-        background: #2a2a2a;
-    }
+/* ----------------- TÍTULO ----------------- */
+.title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #ffda44;
+}
 
-    select, input {
-        background: rgba(255,255,255,0.12);
-        border-radius: 10px;
-        border: 1px solid rgba(255,255,255,0.15);
-        color: white;
-        padding: 12px;
-        width: 100%;
-        margin-bottom: 15px;
-    }
+.subtitle {
+    text-align: center;
+    color: #bfbfbf;
+    margin-bottom: 25px;
+    font-size: 15px;
+}
 
-    select:focus, input:focus {
-        border-color: #f1c40f;
-        box-shadow: 0 0 10px rgba(241,196,15,0.3);
-        outline: none;
-    }
+/* ----------------- CARD DO SERVIÇO ----------------- */
+.servico-card {
+    background: #1c1c1c;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid #2d2d2d;
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    transition: .25s ease;
+}
 
-    .btn-confirm {
-        background: #f1c40f;
-        color: #000;
-        font-weight: 600;
-        width: 100%;
-        padding: 14px;
-        border-radius: 10px;
-        transition: 0.2s;
-        border: none;
-    }
+.servico-card:hover {
+    box-shadow: 0px 0px 25px rgba(255,215,0,0.18);
+    transform: translateY(-3px);
+}
 
-    .btn-confirm:hover {
-        background: #ffdd57;
-        transform: translateY(-2px);
-    }
+.servico-card img {
+    width: 120px;
+    height: 120px;
+    border-radius: 12px;
+    object-fit: cover;
+    background: #2a2a2a;
+}
 
-    .btn-back {
-        text-decoration: none;
-        display: block;
-        padding: 12px;
-        text-align: center;
-        border-radius: 10px;
-        background: rgba(8, 2, 2, 0.1);
-        color: #0c0a0aff;
-        border: 1px solid #555;
-        margin-top: 20px;
-    }
+/* ----------------- CAMPOS ----------------- */
+label {
+    font-weight: 600;
+    margin-top: 10px;
+}
 
-    .btn-back:hover {
-        background: rgba(255,255,255,0.20);
-        color: #1f1c1cff;
-    }
+select, input {
+    background: #111;
+    border-radius: 8px;
+    border: 1px solid #333;
+    color: #fff;
+    padding: 12px;
+    width: 100%;
+    margin-bottom: 15px;
+    transition: .2s;
+}
+
+select:focus, input:focus {
+    border-color: #ffda44;
+    box-shadow: 0px 0px 12px rgba(255,215,0,0.25);
+}
+
+/* ----------------- BOTÃO CONFIRMAR ----------------- */
+.btn-confirm {
+    background: #ffda44;
+    color: #000;
+    font-weight: 700;
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    transition: .25s ease;
+    border: none;
+}
+
+.btn-confirm:hover {
+    background: #ffe88a;
+    transform: translateY(-2px);
+}
+
+/* ----------------- BOTÃO VOLTAR ----------------- */
+.btn-back {
+    display: block;
+    padding: 12px;
+    text-align: center;
+    border-radius: 10px;
+    background: transparent;
+    color: #fff;
+    border: 1px solid #444;
+    margin-top: 25px;
+    transition: .25s ease;
+}
+
+.btn-back:hover {
+    background: #fff;
+    color: #000;
+}
+
 </style>
 
 <script>
@@ -137,6 +169,7 @@ async function carregarHorarios() {
         select.innerHTML += `<option value="${h}">${h}</option>`;
     });
 }
+
 </script>
 </head>
 
@@ -144,44 +177,43 @@ async function carregarHorarios() {
 
 <div class="container container-box">
 
-    <h2 class="text-center mb-3" style="color:#f1c40f;">Agendar Serviço</h2>
-
-    <p class="text-center text-secondary mb-4">Cliente: <strong><?= $clienteNome ?></strong></p>
+    <h2 class="title">Agendar Serviço</h2>
+    <p class="subtitle">Cliente: <strong><?= $clienteNome ?></strong></p>
 
    
     <?php if ($servicoAtual): ?>
     <div class="servico-card">
-        <img src="../assets/img/<?= $servicoAtual['img'] ?>"
+        <img src="../assets/servicos/<?= $servicoAtual['img'] ?>"
              alt="<?= $servicoAtual['nome'] ?>"
-             onerror="this.src='../assets/img/padrao.jpg'">
+             onerror="this.src='../assets/servicos/padrao.jpg'">
 
         <div>
-            <h4><?= $servicoAtual["nome"] ?></h4>
+            <h4 style="margin-bottom: 5px;"><?= $servicoAtual["nome"] ?></h4>
             <p class="text-secondary mb-1"><?= $servicoAtual["duracao_min"] ?> min</p>
-            <h5 class="text-success">R$ <?= number_format($servicoAtual["preco"], 2, ',', '.') ?></h5>
+            <h5 style="color:#ffda44;">
+                R$ <?= number_format($servicoAtual["preco"], 2, ',', '.') ?>
+            </h5>
         </div>
     </div>
     <?php endif; ?>
 
-    
+
     <form action="/BarbeariaLV2/views/barbeiros_cliente.php" method="GET">
 
-    <input type="hidden" name="servico" id="servico_id" value="<?= $servicoAtual["id"] ?>">
+        <input type="hidden" name="servico" id="servico_id" value="<?= $servicoAtual["id"] ?>">
 
-    <label>Selecione a Data</label>
-    <input type="date" name="data" id="data" onchange="carregarHorarios()" required>
+        <label>Selecione a Data</label>
+        <input type="date" name="data" id="data" onchange="carregarHorarios()" required>
 
-    <label class="mt-3">Selecione o Horário</label>
-    <select name="hora" id="hora" required>
-        <option value="">Escolha a data primeiro</option>
-    </select>
+        <label>Selecione o Horário</label>
+        <select name="hora" id="hora" required>
+            <option value="">Escolha a data primeiro</option>
+        </select>
 
-    <button type="submit" class="btn-confirm mt-3">Escolher Barbeiro →</button>
-</form>
+        <button type="submit" class="btn-confirm mt-3">Escolher Barbeiro →</button>
+    </form>
 
     <a href="../admin/servicos.php" class="btn-back">⬅ Voltar aos Serviços</a>
-
-    
 
 </div>
 
