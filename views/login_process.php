@@ -30,10 +30,6 @@ if ($usuario && password_verify($senha, $usuario["senha"])) {
 
     if ($usuario["tipo"] === "cliente") {
         header("Location: ../admin/servicos.php");
-    } elseif ($usuario["tipo"] === "barbeiro") {
-        header("Location: ../barbeiro/painel.php");
-    } elseif ($usuario["tipo"] === "admin") {
-        header("Location: ../admin/dashboard.php");
     } else {
         header("Location: ../admin/servicos.php");
     }
