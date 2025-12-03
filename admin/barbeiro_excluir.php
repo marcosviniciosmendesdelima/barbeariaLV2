@@ -2,42 +2,46 @@
 session_start();
 require_once "../config/db.php";
 
-$conn = Database::connect();
-
-// validar admin
 if (!isset($_SESSION["admin_id"])) {
     header("Location: login_admin.php");
     exit;
 }
 
-// validar id
-if (!isset($_GET["id"])) {
-    die("ID inválido.");
+$conn = Database::connect();
+
+$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+
+if (!$id || $id <= 0) {
+    header("Location: barbeiros.php?erro=id_invalido");
+    exit;
 }
 
-$id = intval($_GET["id"]);
-$sql = "SELECT foto FROM barbeiros WHERE id = :id LIMIT 1";
-$stmt = $conn->prepare($sql);
-$stmt->bindParam(":id", $id);
+$stmt = $conn->prepare("SELECT foto FROM barbeiros WHERE id = :id LIMIT 1");
+$stmt->bindValue(":id", $id, PDO::PARAM_INT);
 $stmt->execute();
 $barbeiro = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$barbeiro) {
-    die("Barbeiro não encontrado.");
+    header("Location: barbeiros.php?erro=nao_encontrado");
+    exit;
 }
 
-if (!empty($barbeiro["foto"]) && file_exists("../uploads/barbeiros/" . $barbeiro["foto"])) {
-    unlink("../uploads/barbeiros/" . $barbeiro["foto"]);
+$diretorio = "../assets/barbeiros/";
+
+if (!empty($barbeiro["foto"])) {
+    $caminho = $diretorio . $barbeiro["foto"];
+    if (file_exists($caminho)) {
+        unlink($caminho);
+    }
 }
 
-$sqlDel = "DELETE FROM barbeiros WHERE id = :id LIMIT 1";
-$stmtDel = $conn->prepare($sqlDel);
-$stmtDel->bindParam(":id", $id);
+$stmtDel = $conn->prepare("DELETE FROM barbeiros WHERE id = :id LIMIT 1");
+$stmtDel->bindValue(":id", $id, PDO::PARAM_INT);
 
 if ($stmtDel->execute()) {
     header("Location: barbeiros.php?delete_ok=1");
     exit;
-} else {
-    die("Erro ao excluir barbeiro.");
 }
 
+header("Location: barbeiros.php?erro=delete");
+exit;

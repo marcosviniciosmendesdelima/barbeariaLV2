@@ -305,7 +305,7 @@ h1 {
 </div>
 
 <div style="width:100%; text-align:center; margin-top:45px;">
-    <a href="painel.php" class="btn-voltar">← Voltar ao Painel</a>
+    <a href="painel.php" class="btn-voltar">Voltar ao Painel</a>
 </div>
 
 </body>

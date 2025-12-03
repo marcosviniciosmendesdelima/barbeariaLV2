@@ -1,6 +1,11 @@
+
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
+
+
+
 
 CREATE TABLE `administradores` (
   `id` int(11) NOT NULL,
@@ -10,8 +15,12 @@ CREATE TABLE `administradores` (
   `criado_em` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+
 INSERT INTO `administradores` (`id`, `nome`, `email`, `senha`, `criado_em`) VALUES
 (1, 'Administrador Master', 'admin@barbearia.com', '$2y$10$HemfoP7d44jSRG7PHTkNbOxyHFhLG31Sd/3M1Wh49X6aAlnN0BkFK', '2025-11-15 17:17:44');
+
+
 
 CREATE TABLE `agendamentos` (
   `id` int(11) NOT NULL,
@@ -24,6 +33,7 @@ CREATE TABLE `agendamentos` (
   `status` enum('pendente','confirmado','cancelado','concluido') DEFAULT 'pendente',
   `criado_em` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 INSERT INTO `agendamentos` (`id`, `usuario_id`, `barbeiro_id`, `administrador_id`, `servico_id`, `data_agendamento`, `hora_agendamento`, `status`, `criado_em`) VALUES
 (9, 5, 4, NULL, NULL, '2025-11-18', '13:00:00', 'cancelado', '2025-11-18 02:39:35'),
@@ -46,9 +56,24 @@ INSERT INTO `agendamentos` (`id`, `usuario_id`, `barbeiro_id`, `administrador_id
 (26, 5, 11, NULL, 11, '2025-11-19', '14:00:00', 'concluido', '2025-11-20 01:49:04'),
 (27, 5, 10, NULL, 11, '2025-11-19', '14:00:00', 'confirmado', '2025-11-20 01:50:48'),
 (28, 5, 10, NULL, 11, '2025-11-24', '09:30:00', 'concluido', '2025-11-23 16:11:04'),
-(29, 5, 10, NULL, 4, '2025-11-24', '15:00:00', 'confirmado', '2025-11-23 16:42:36'),
+(29, 5, 10, NULL, 4, '2025-11-24', '15:00:00', 'concluido', '2025-11-23 16:42:36'),
 (30, 5, 11, NULL, 10, '2025-11-23', '17:00:00', 'confirmado', '2025-11-23 16:45:09'),
-(31, 5, 11, NULL, 4, '2025-11-06', '16:30:00', 'confirmado', '2025-11-23 18:33:10');
+(31, 5, 11, NULL, 4, '2025-11-06', '16:30:00', 'confirmado', '2025-11-23 18:33:10'),
+(32, 5, 14, NULL, 4, '2025-11-25', '16:00:00', 'confirmado', '2025-11-25 18:20:10'),
+(33, 5, 13, NULL, 5, '2025-11-26', '16:00:00', 'confirmado', '2025-11-25 18:20:49'),
+(34, 5, 13, NULL, 5, '2025-11-27', '15:30:00', 'confirmado', '2025-11-27 12:27:25'),
+(35, 5, 12, NULL, 11, '2025-11-27', '09:30:00', 'confirmado', '2025-11-27 13:30:53'),
+(36, 5, 13, NULL, 4, '2025-12-09', '15:30:00', 'confirmado', '2025-12-01 19:36:18'),
+(37, 5, 14, NULL, 4, '2025-12-09', '15:30:00', 'confirmado', '2025-12-01 19:42:43'),
+(38, 5, 13, NULL, 5, '2025-12-02', '17:00:00', 'cancelado', '2025-12-01 20:48:13'),
+(39, 5, 13, NULL, 4, '2025-12-03', '16:00:00', 'confirmado', '2025-12-01 21:00:11'),
+(40, 5, 14, NULL, 4, '2025-12-02', '14:30:00', 'confirmado', '2025-12-01 21:03:07'),
+(41, 5, 13, NULL, 5, '2025-12-01', '13:00:00', 'confirmado', '2025-12-01 21:04:14'),
+(42, 5, 12, NULL, 4, '2025-12-02', '12:30:00', 'confirmado', '2025-12-01 21:07:39'),
+(43, 5, 13, NULL, 5, '2025-12-02', '11:00:00', 'confirmado', '2025-12-01 21:11:02'),
+(44, 5, 14, NULL, 8, '2025-12-02', '15:30:00', 'confirmado', '2025-12-01 21:12:25');
+
+
 
 CREATE TABLE `barbeiros` (
   `id` int(11) NOT NULL,
@@ -65,10 +90,12 @@ CREATE TABLE `barbeiros` (
   `ativo` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+
 INSERT INTO `barbeiros` (`id`, `nome`, `foto`, `cargo`, `especialidades`, `sobre`, `horario_atendimento`, `status`, `avaliacao`, `total_avaliacoes`, `data_cadastro`, `ativo`) VALUES
-(9, 'Ramon Silva', 'barbeiro_691dedbcc8689.jpg', 'Barbeiro Profissional', 'Corte Social e Barba Responsiva', '', 'Seg à Sab - 08 ás 20hrs', 'disponivel', 5.00, 0, '2025-11-19 16:18:04', 1),
-(10, 'Pedro Renato', 'barbeiro_691dee6b22568.jpg', 'Barbeiro Profissional', 'Especialista em Degradê', '', 'Seg à Sab - 08 ás 20hrs', 'disponivel', 5.00, 0, '2025-11-19 16:20:59', 1),
-(11, 'Mateus Nobre', 'barbeiro_691def3fdd619.jpg', 'Barbeiro Profissional', 'Degradê, Barba e Sombrancelha', '', 'Seg à Sab - 08 ás 20hrs', 'disponivel', 5.00, 0, '2025-11-19 16:24:31', 1);
+(12, 'Lucas Ramon', 'barbeiro_6925f1aa50f83.jpg', 'Barbeiro Profissional', 'Degradê, Barba e Sombrancelha', '', 'Seg à Sab - 07 ás 18hrs', 'disponivel', 5.00, 0, '2025-11-25 18:12:58', 1),
+(13, 'Alex Santana', 'barbeiro_6925f2466c29a.jpg', 'Barbeiro Profissional', 'Corte Social e Barba Responsiva', '', 'Seg à Sab - 07 ás 18hrs', 'disponivel', 5.00, 0, '2025-11-25 18:15:34', 1),
+(14, 'Garibalda Henriqueta', 'barbeiro_6925f2e03d1cf.jpg', 'Barbeira Profissional', 'Especialista em Degradê', '', 'Seg à Sab - 07 ás 18hrs', 'disponivel', 5.00, 0, '2025-11-25 18:18:08', 1);
 
 
 CREATE TABLE `bloqueios` (
@@ -81,6 +108,7 @@ CREATE TABLE `bloqueios` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
+
 CREATE TABLE `configuracao` (
   `id` int(11) NOT NULL,
   `nome_barbeira` varchar(120) DEFAULT 'Barbearia LV2',
@@ -89,8 +117,10 @@ CREATE TABLE `configuracao` (
   `logo` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
 INSERT INTO `configuracao` (`id`, `nome_barbeira`, `cor_primaria`, `cor_secundaria`, `logo`) VALUES
 (1, 'Barbearia LV2', '#ffc400', '#1f1f1f', NULL);
+
 
 CREATE TABLE `horarios_barbeiro` (
   `id` int(11) NOT NULL,
@@ -99,6 +129,8 @@ CREATE TABLE `horarios_barbeiro` (
   `hora_inicio` time NOT NULL,
   `hora_fim` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
 
 CREATE TABLE `servicos` (
   `id` int(11) NOT NULL,
@@ -110,6 +142,8 @@ CREATE TABLE `servicos` (
   `img` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+
 INSERT INTO `servicos` (`id`, `nome`, `preco`, `duracao`, `ativo`, `duracao_min`, `img`) VALUES
 (4, 'Corte Degradê', 40.00, 0, 1, 40, 'degrade.avif'),
 (5, 'Corte na Tesoura', 45.00, 0, 1, 45, 'tesoura.jfif'),
@@ -118,6 +152,8 @@ INSERT INTO `servicos` (`id`, `nome`, `preco`, `duracao`, `ativo`, `duracao_min`
 (9, 'Hidratação Capilar', 30.00, 0, 1, 20, 'hidratacao.jpg'),
 (10, 'Luzes / Platinado', 120.00, 0, 1, 90, 'platinado.jpg'),
 (11, 'Combo Premium (Corte + Barba + Hidratação)', 70.00, 0, 1, 70, 'combo.png');
+
+
 
 CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL,
@@ -128,6 +164,7 @@ CREATE TABLE `usuarios` (
   `criado_em` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
 INSERT INTO `usuarios` (`id`, `nome`, `email`, `senha`, `tipo`, `criado_em`) VALUES
 (1, 'Cliente Teste', 'cliente@teste.com', '$2y$10$HemfoP7d44jSRG7PHTkNbOxyHFhLG31Sd/3M1Wh49X6aAlnN0BkFK', 'cliente', '2025-11-15 17:17:44'),
 (2, 'Vini', 'sdjvhd@gmail.com', '$2y$10$sXGRytxjNruBi8..QR6.ye4lDSBxeIrOIz2XDO9mXsrwaBsOVbrie', 'cliente', '2025-11-15 18:55:59'),
@@ -136,9 +173,11 @@ INSERT INTO `usuarios` (`id`, `nome`, `email`, `senha`, `tipo`, `criado_em`) VAL
 (6, 'manoel', '123m@gmail.com', '$2y$10$u0ORNrEvr33gKMIP/hU0oerseI8Tn6OG8PuEWJqKvF3QAmn.Jk66e', 'admin', '2025-11-17 21:32:42'),
 (7, 'Isaac  Nobre', 'foto.nilton@hotmail.com', '$2y$10$XRxxxiQBGTw6f1YZz0Kb7OpT0uw9CklB6vI5O9nXeAqq9vuNai6KC', 'admin', '2025-11-24 00:05:33');
 
+
 ALTER TABLE `administradores`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
+
 
 ALTER TABLE `agendamentos`
   ADD PRIMARY KEY (`id`),
@@ -146,9 +185,10 @@ ALTER TABLE `agendamentos`
   ADD KEY `fk_agend_admin` (`administrador_id`),
   ADD KEY `fk_agend_servico` (`servico_id`);
 
+
 ALTER TABLE `barbeiros`
   ADD PRIMARY KEY (`id`);
--
+
 ALTER TABLE `bloqueios`
   ADD PRIMARY KEY (`id`);
 
@@ -170,10 +210,10 @@ ALTER TABLE `administradores`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 ALTER TABLE `agendamentos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 ALTER TABLE `barbeiros`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 ALTER TABLE `bloqueios`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
@@ -198,4 +238,3 @@ ALTER TABLE `agendamentos`
 ALTER TABLE `horarios_barbeiro`
   ADD CONSTRAINT `horarios_barbeiro_ibfk_1` FOREIGN KEY (`barbeiro_id`) REFERENCES `usuarios` (`id`);
 COMMIT;
-

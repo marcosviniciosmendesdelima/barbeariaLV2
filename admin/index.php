@@ -4,16 +4,15 @@ require_once "../config/db.php";
 
 $conn = Database::connect();
 
-// já logado? vai para painel
 if (isset($_SESSION["user"]) && $_SESSION["user"]["tipo"] === "admin") {
     header("Location: painel.php");
     exit;
 }
 
-// carregar configurações
 $config = $conn->query("SELECT * FROM configuracao LIMIT 1")->fetch(PDO::FETCH_ASSOC);
+
 $nomeBarbearia = $config["nome_barbeira"] ?? "Barbearia LV2";
-$corPrimaria  = $config["cor_primaria"] ?? "#ffc400";
+$corPrimaria   = $config["cor_primaria"] ?? "#ffc400";
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -38,8 +37,8 @@ $corPrimaria  = $config["cor_primaria"] ?? "#ffc400";
     }
 
     @keyframes bg {
-        0%   { background-position: 0% 50%; }
-        50%  { background-position: 100% 50%; }
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
         100% { background-position: 0% 50%; }
     }
 
@@ -52,7 +51,7 @@ $corPrimaria  = $config["cor_primaria"] ?? "#ffc400";
         backdrop-filter: blur(14px);
         border: 1px solid rgba(255,255,255,0.18);
         box-shadow: 0 0 28px rgba(255,193,7,.22);
-        animation: fade .8s ease;
+        animation: fade .8s ease forwards;
         opacity: 0;
     }
 
@@ -82,6 +81,7 @@ $corPrimaria  = $config["cor_primaria"] ?? "#ffc400";
         background: <?= $corPrimaria ?>;
         color: #000;
     }
+
     .btn-login:hover {
         background: #ffdd55;
         transform: translateY(-2px);
@@ -92,6 +92,7 @@ $corPrimaria  = $config["cor_primaria"] ?? "#ffc400";
         color: #fff;
         border: 1px solid rgba(255,255,255,0.15);
     }
+
     .btn-sec:hover {
         background: rgba(255,255,255,0.18);
         transform: translateY(-2px);

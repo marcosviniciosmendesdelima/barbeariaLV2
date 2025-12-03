@@ -1,8 +1,7 @@
 <?php
 session_start();
 
-// Se já estiver logado como admin, manda para o painel
-if (isset($_SESSION["admin_id"])) {
+if (!empty($_SESSION["user"]) && ($_SESSION["user"]["tipo"] ?? '') === "admin") {
     header("Location: painel.php");
     exit;
 }
@@ -15,10 +14,11 @@ $created = isset($_GET["created"]);
 <head>
 <meta charset="UTF-8">
 <title>Login Admin - Barbearia LV2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-
 body {
     margin: 0;
     padding: 0;
@@ -32,14 +32,11 @@ body {
     font-family: "Inter", sans-serif;
     color: white;
 }
-
 @keyframes bgMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
-
-/* Container premium */
 .container {
     width: 90%;
     max-width: 430px;
@@ -53,12 +50,9 @@ body {
     animation: fadeIn 1s ease forwards;
     opacity: 0;
 }
-
 @keyframes fadeIn {
     to { opacity: 1; }
 }
-
-/* Logo redonda dourada */
 .logo-box {
     width: 130px;
     height: 130px;
@@ -68,14 +62,11 @@ body {
     border: 3px solid rgba(255,215,0,0.45);
     box-shadow: 0 0 22px rgba(255,215,0,0.30);
 }
-
 .logo-box img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-
-/* Títulos */
 h2 {
     font-size: 30px;
     margin-bottom: 10px;
@@ -83,18 +74,14 @@ h2 {
     font-weight: 700;
     letter-spacing: 1px;
 }
-
 .subtitle {
     color: #cfcfcf;
     margin-bottom: 30px;
 }
-
-/* Inputs */
 .input-box {
     margin-bottom: 16px;
     text-align: left;
 }
-
 input {
     width: 100%;
     padding: 14px;
@@ -105,13 +92,11 @@ input {
     font-size: 15px;
     transition: 0.25s;
 }
-
 input:focus {
     border-color: #ffda44;
     box-shadow: 0 0 12px rgba(255,215,0,0.35);
+    outline: none;
 }
-
-/* Botão admin */
 button {
     width: 100%;
     background: #ffda44;
@@ -124,13 +109,10 @@ button {
     color: #000;
     transition: .25s;
 }
-
 button:hover {
     background: #ffe88a;
     transform: translateY(-2px);
 }
-
-/* Alertas */
 .alert {
     background: rgba(200, 30, 30, 0.45);
     padding: 12px;
@@ -138,14 +120,11 @@ button:hover {
     margin-bottom: 16px;
     border: 1px solid rgba(200, 30, 30, 0.4);
 }
-
 .alert-success {
     background: rgba(25, 220, 120, 0.30);
     border: 1px solid rgba(25, 220, 120, 0.45);
     color: #d3ffe7;
 }
-
-/* Links */
 .link-btn {
     margin-top: 18px;
     display: block;
@@ -156,7 +135,6 @@ button:hover {
     transition: .25s;
     font-size: 15px;
 }
-
 .link-create {
     background: rgba(255,255,255,0.12);
     color: #fff;
@@ -166,17 +144,16 @@ button:hover {
     background: rgba(255,255,255,0.22);
     transform: translateY(-2px);
 }
-
 .link-back {
     margin-top: 14px;
     font-size: 14px;
     color: #aaa;
+    text-decoration: none;
 }
 .link-back:hover {
     color: #fff;
     text-decoration: underline;
 }
-
 </style>
 </head>
 
@@ -202,18 +179,30 @@ button:hover {
     <form method="POST" action="login_admin_process.php">
 
         <div class="input-box">
-            <input type="email" name="email" placeholder="E-mail do administrador" required>
+            <input
+                type="email"
+                name="email"
+                placeholder="E-mail do administrador"
+                autocomplete="email"
+                required
+            >
         </div>
 
         <div class="input-box">
-            <input type="password" name="senha" placeholder="Senha" required>
+            <input
+                type="password"
+                name="senha"
+                placeholder="Senha"
+                autocomplete="current-password"
+                required
+            >
         </div>
 
         <button type="submit">Entrar</button>
     </form>
 
     <a href="register.php" class="link-btn link-create">Criar Conta de Administrador</a>
-    <a href="../index.html" class="link-back">← Voltar ao início</a>
+    <a href="../index.html" class="link-back">Voltar ao início</a>
 
 </div>
 

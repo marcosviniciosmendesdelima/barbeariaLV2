@@ -12,28 +12,29 @@ $conn = Database::connect();
 $email = filter_var(trim($_POST["email"] ?? ""), FILTER_VALIDATE_EMAIL);
 $senha = trim($_POST["senha"] ?? "");
 
-if (!$email || empty($senha)) {
+if (!$email || $senha === "") {
     header("Location: login.php?erro=1");
     exit;
 }
 
-$stmt = $conn->prepare("SELECT id, nome, email, senha, tipo FROM usuarios WHERE email = ? LIMIT 1");
+$stmt = $conn->prepare("
+    SELECT id, nome, email, senha, tipo
+    FROM usuarios
+    WHERE email = ?
+    LIMIT 1
+");
 $stmt->execute([$email]);
-$usuario = $stmt->fetch();
+$usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if ($usuario && password_verify($senha, $usuario["senha"])) {
+    session_regenerate_id(true);
 
-    $_SESSION["cliente_id"]    = $usuario["id"];
+    $_SESSION["cliente_id"]    = (int) $usuario["id"];
     $_SESSION["cliente_nome"]  = $usuario["nome"];
     $_SESSION["cliente_email"] = $usuario["email"];
     $_SESSION["tipo"]          = $usuario["tipo"] ?? "cliente";
 
-    if ($usuario["tipo"] === "cliente") {
-        header("Location: ../admin/servicos.php");
-    } else {
-        header("Location: ../admin/servicos.php");
-    }
-
+    header("Location: ../admin/servicos.php");
     exit;
 }
 

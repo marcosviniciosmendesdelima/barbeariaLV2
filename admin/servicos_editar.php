@@ -2,58 +2,86 @@
 include 'header.php';
 require_once '../config/db.php';
 
-// Verificar ID
-if (!isset($_GET['id'])) {
+$conn = Database::connect();
+
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+if (!$id || $id <= 0) {
     header("Location: servicos_listar.php");
     exit;
 }
 
-$id = intval($_GET['id']);
-
-// Buscar serviço
-$sql = "SELECT * FROM servicos WHERE id = ?";
-$stmt = $conn->prepare($sql);
+$stmt = $conn->prepare("SELECT * FROM servicos WHERE id = ? LIMIT 1");
 $stmt->execute([$id]);
 $servico = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$servico) {
     echo "<p class='text-center text-danger mt-5'>Serviço não encontrado.</p>";
+    include 'footer.php';
     exit;
 }
 
-// Diretório de uploads
 $upload_dir = "../assets/servicos/";
 if (!is_dir($upload_dir)) {
     mkdir($upload_dir, 0777, true);
 }
 
-// Atualizar serviço
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $nome = $_POST["nome"];
-    $preco = $_POST["preco"];
-    $duracao = $_POST["duracao"];
-    $duracao_min = $_POST["duracao_min"];
-    $ativo = isset($_POST["ativo"]) ? 1 : 0;
+    $nome        = trim($_POST["nome"] ?? "");
+    $preco       = isset($_POST["preco"]) ? (float) $_POST["preco"] : 0;
+    $duracao     = isset($_POST["duracao"]) ? (int) $_POST["duracao"] : 0;
+    $duracao_min = isset($_POST["duracao_min"]) ? (int) $_POST["duracao_min"] : 0;
+    $ativo       = isset($_POST["ativo"]) ? 1 : 0;
 
-    // Manter imagem antiga
-    $img_name = $servico['img'];
-
-    // Se enviar nova imagem
-    if (!empty($_FILES["img"]["name"])) {
-        $ext = pathinfo($_FILES["img"]["name"], PATHINFO_EXTENSION);
-        $img_name = time() . "_" . uniqid() . "." . $ext;
-        move_uploaded_file($_FILES["img"]["tmp_name"], $upload_dir . $img_name);
+    if ($nome === "" || $preco <= 0 || $duracao <= 0 || $duracao_min <= 0) {
+        header("Location: servicos_editar.php?id={$id}&erro=1");
+        exit;
     }
 
-    // Atualizar banco
-    $sql = "UPDATE servicos 
-            SET nome=?, preco=?, duracao=?, duracao_min=?, img=?, ativo=? 
-            WHERE id=?";
+    $img_name = $servico['img'];
+
+    if (!empty($_FILES["img"]["name"]) && is_uploaded_file($_FILES["img"]["tmp_name"])) {
+
+        $allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
+        $mime    = mime_content_type($_FILES["img"]["tmp_name"]);
+
+        if (in_array($mime, $allowed, true)) {
+            $ext = strtolower(pathinfo($_FILES["img"]["name"], PATHINFO_EXTENSION));
+            $new_name = time() . "_" . bin2hex(random_bytes(4)) . "." . $ext;
+            $destino  = $upload_dir . $new_name;
+
+            if (move_uploaded_file($_FILES["img"]["tmp_name"], $destino)) {
+                if (!empty($img_name)) {
+                    $old_path = $upload_dir . $img_name;
+                    if (is_file($old_path) && file_exists($old_path)) {
+                        @unlink($old_path);
+                    }
+                }
+                $img_name = $new_name;
+            }
+        }
+    }
+
+    $sql = "
+        UPDATE servicos 
+           SET nome = :nome,
+               preco = :preco,
+               duracao = :duracao,
+               duracao_min = :duracao_min,
+               img = :img,
+               ativo = :ativo
+         WHERE id = :id
+    ";
 
     $stmt = $conn->prepare($sql);
     $stmt->execute([
-        $nome, $preco, $duracao, $duracao_min, $img_name, $ativo, $id
+        ':nome'        => $nome,
+        ':preco'       => $preco,
+        ':duracao'     => $duracao,
+        ':duracao_min' => $duracao_min,
+        ':img'         => $img_name,
+        ':ativo'       => $ativo,
+        ':id'          => $id,
     ]);
 
     header("Location: servicos_listar.php?editado=1");
@@ -63,18 +91,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <style>
 body { background:#0d0d0d; color:#fff; }
-
 .form-control, .form-select {
     background:#111;
     border:1px solid #333;
     color:#fff;
 }
-
 .form-control:focus, .form-select:focus {
     border-color:#f1c40f;
     box-shadow:0 0 0 0.2rem rgba(241,196,15,.25);
 }
-
 .btn-lv {
     background:#f1c40f;
     border:none;
@@ -83,11 +108,9 @@ body { background:#0d0d0d; color:#fff; }
     padding:10px;
     border-radius:8px;
 }
-
 .btn-lv:hover {
     background:#ffdd57;
 }
-
 .card-form {
     background:#1a1a1a;
     border:1px solid #2a2a2a;
@@ -108,35 +131,64 @@ body { background:#0d0d0d; color:#fff; }
                 <form method="POST" enctype="multipart/form-data">
 
                     <label class="form-label">Nome</label>
-                    <input type="text" name="nome" class="form-control mb-3"
-                        value="<?= htmlspecialchars($servico['nome']) ?>" required>
+                    <input
+                        type="text"
+                        name="nome"
+                        class="form-control mb-3"
+                        value="<?= htmlspecialchars($servico['nome'], ENT_QUOTES, 'UTF-8') ?>"
+                        required
+                    >
 
                     <label class="form-label">Preço (R$)</label>
-                    <input type="number" step="0.01" name="preco" class="form-control mb-3"
-                        value="<?= $servico['preco'] ?>" required>
+                    <input
+                        type="number"
+                        step="0.01"
+                        name="preco"
+                        class="form-control mb-3"
+                        value="<?= htmlspecialchars($servico['preco'], ENT_QUOTES, 'UTF-8') ?>"
+                        required
+                    >
 
                     <label class="form-label">Duração (min)</label>
-                    <input type="number" name="duracao" class="form-control mb-3"
-                        value="<?= $servico['duracao'] ?>" required>
+                    <input
+                        type="number"
+                        name="duracao"
+                        class="form-control mb-3"
+                        value="<?= (int) $servico['duracao'] ?>"
+                        required
+                    >
 
                     <label class="form-label">Duração média (min)</label>
-                    <input type="number" name="duracao_min" class="form-control mb-3"
-                        value="<?= $servico['duracao_min'] ?>" required>
+                    <input
+                        type="number"
+                        name="duracao_min"
+                        class="form-control mb-3"
+                        value="<?= (int) $servico['duracao_min'] ?>"
+                        required
+                    >
 
                     <label class="form-label">Imagem atual</label><br>
 
                     <?php if (!empty($servico['img'])): ?>
-                        <img src="../assets/servicos/<?= $servico['img'] ?>" 
-                             width="140" class="rounded mb-3">
+                        <img
+                            src="../assets/servicos/<?= htmlspecialchars($servico['img'], ENT_QUOTES, 'UTF-8') ?>"
+                            width="140"
+                            class="rounded mb-3"
+                            alt="Imagem do serviço"
+                        >
                     <?php else: ?>
                         <p class="text-secondary">Nenhuma imagem cadastrada</p>
                     <?php endif; ?>
 
                     <label class="form-label">Nova imagem (opcional)</label>
-                    <input type="file" name="img" class="form-control mb-3">
+                    <input type="file" name="img" class="form-control mb-3" accept="image/*">
 
                     <label class="form-label">Ativo</label><br>
-                    <input type="checkbox" name="ativo" <?= $servico['ativo'] ? 'checked' : '' ?>>
+                    <input
+                        type="checkbox"
+                        name="ativo"
+                        <?= !empty($servico['ativo']) ? 'checked' : '' ?>
+                    >
                     <span>Serviço disponível</span>
 
                     <button type="submit" class="btn-lv w-100 mt-4">

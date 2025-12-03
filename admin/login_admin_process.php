@@ -2,47 +2,48 @@
 session_start();
 require_once "../config/db.php";
 
-$conn = Database::connect();
-
-// Apenas POST
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     header("Location: login_admin.php");
     exit;
 }
 
-$email = trim($_POST["email"] ?? "");
+$conn = Database::connect();
+
+$email = filter_var(trim($_POST["email"] ?? ""), FILTER_VALIDATE_EMAIL);
 $senha = trim($_POST["senha"] ?? "");
 
-// Busca admin na tabela USUARIOS
+if (!$email || $senha === "") {
+    header("Location: login_admin.php?erro=1");
+    exit;
+}
+
 $stmt = $conn->prepare("
-    SELECT * FROM usuarios 
-    WHERE email = ? 
+    SELECT id, nome, email, senha, tipo
+    FROM usuarios
+    WHERE email = ?
       AND tipo = 'admin'
     LIMIT 1
 ");
 $stmt->execute([$email]);
 $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Verificar senha
 if ($admin && password_verify($senha, $admin["senha"])) {
+    session_regenerate_id(true);
 
-    // Mantém a sessão padrão
     $_SESSION["user"] = [
-        "id"    => $admin["id"],
+        "id"    => (int) $admin["id"],
         "nome"  => $admin["nome"],
         "email" => $admin["email"],
         "tipo"  => $admin["tipo"]
     ];
 
-    // Sessão específica usada pelo painel
-    $_SESSION["admin_id"]   = $admin["id"];
-    $_SESSION["admin_nome"] = $admin["nome"];
-    $_SESSION["admin_email"]= $admin["email"];
+    $_SESSION["admin_id"]    = (int) $admin["id"];
+    $_SESSION["admin_nome"]  = $admin["nome"];
+    $_SESSION["admin_email"] = $admin["email"];
 
     header("Location: painel.php");
     exit;
 }
 
-// Se falhar login
 header("Location: login_admin.php?erro=1");
 exit;

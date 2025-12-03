@@ -1,7 +1,4 @@
 <?php
-// config/db.php
-// Classe central de conexão PDO para todo o sistema
-
 class Database {
     private $host = "localhost";
     private $dbname = "barbearia_lv2";
@@ -9,12 +6,8 @@ class Database {
     private $pass = "";
     private static $instance = null;
 
-    // Impede múltiplas conexões
     private function __construct() {}
 
-    /** 
-     * Retorna instância única de conexão PDO 
-     */
     public static function connect() {
         if (self::$instance === null) {
             try {
@@ -40,7 +33,5 @@ class Database {
     }
 }
 
-// Instância padrão usada em todo o sistema
 $conn = Database::connect();
-
 
